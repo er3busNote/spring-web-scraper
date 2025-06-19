@@ -1,7 +1,7 @@
-package com.task.scraper.domain.scrape.entity;
+package com.task.scraper.domain.flight.entity;
 
-import com.task.scraper.domain.scrape.dto.ScrapeRequest;
-import com.task.scraper.domain.scrape.type.ScrapeStatus;
+import com.task.scraper.domain.flight.dto.FlightRequest;
+import com.task.scraper.domain.flight.type.FlightStatus;
 import com.task.scraper.global.common.utils.DateUtil;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -14,18 +14,18 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Scrape {
+public class Flight {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", columnDefinition = "BIGINT(20) COMMENT '스크랩 결과 ID'")
     private Long id;
 
-    @Column(name = "AIRLINE", nullable = false, columnDefinition = "VARCHAR(50) COMMENT '항공사'")
-    private String airline;
-
     @Column(name = "FLIGHT_NO", nullable = false, columnDefinition = "VARCHAR(20) COMMENT '항공편 번호'")
     private String flightNumber;
+
+    @Column(name = "AIRLINE", nullable = false, columnDefinition = "VARCHAR(50) COMMENT '항공사'")
+    private String airline;
 
     @Column(name = "DEPARTURE", nullable = false, columnDefinition = "VARCHAR(30) COMMENT '출발지'")
     private String departure;
@@ -50,20 +50,17 @@ public class Scrape {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", nullable = false, columnDefinition = "VARCHAR(20) COMMENT '상태 (성공, 실패)'")
-    private ScrapeStatus status;
+    private FlightStatus status;
 
     @Column(name = "REMARK", nullable = true, columnDefinition = "VARCHAR(255) COMMENT '비고 (에러메시지 등)'")
     private String remark;
-
-    @Column(name = "PROXY", nullable = false, columnDefinition = "VARCHAR(30) COMMENT '프록시주소'")
-    private String proxyUsed;
 
     @Builder.Default
     @Column(name = "SCRAPED_AT", updatable = false, nullable = false, columnDefinition = "TIMESTAMP DEFAULT current_timestamp() COMMENT '스크래핑 시작일시'")
     @CreationTimestamp  // INSERT 시 자동으로 값을 채워줌
     private LocalDateTime scrapedAt = LocalDateTime.now();
 
-    public Scrape(ScrapeRequest orderRequest, String airline, boolean available, String proxyUsed) {
+    public Flight(FlightRequest orderRequest, String airline, boolean available) {
         this.airline = airline;
         this.flightNumber = airline;
         this.departure = orderRequest.getOrigin();
@@ -73,7 +70,6 @@ public class Scrape {
         this.flightDate = LocalDateTime.now();
         this.price = 0.0;
         this.currency = "KR";
-        this.status = ScrapeStatus.IN_PROGRESS;
-        this.proxyUsed = proxyUsed;
+        this.status = FlightStatus.IN_PROGRESS;
     }
 }

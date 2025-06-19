@@ -1,4 +1,4 @@
-package com.task.scraper.domain.scrape.dto;
+package com.task.scraper.domain.flight.dto;
 
 import com.task.scraper.global.common.validation.MinListSize;
 import lombok.*;
@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class ScrapeRequest {
+public class FlightRequest {
 
     @MinListSize(value = 1, message = "비행기정보는 최소 1개 이상의 항목을 포함해야 합니다.")
     private List<String> airlines;

@@ -1,4 +1,4 @@
-package com.web.scraper;
+package com.task.scraper;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
